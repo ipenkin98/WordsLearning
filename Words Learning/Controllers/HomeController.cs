@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -12,16 +13,21 @@ namespace Words_Learning.Controllers
 {
     public class HomeController : Controller
     {
+        private UserWordsContext db;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, UserWordsContext context)
         {
             _logger = logger;
+            db = context;
         }
 
         [Authorize]
-        public IActionResult Index()
+        public async Task<ActionResult<User>> Index(int ?id)
         {
+            User user = await db.Users.FirstOrDefaultAsync(x => x.Id == id);
+            if (user == null)
+                 ModelState.AddModelError("", "Id не найден"); ;
             return View();
         }
 

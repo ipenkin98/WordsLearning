@@ -38,7 +38,7 @@ namespace Words_Learning.Controllers
                 {
                     await Authenticate(model.Email); // аутентификация
 
-                    return RedirectToAction($"Index", "Home");
+                    return Redirect("/Home/Index/" + user.Id);
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
@@ -66,7 +66,7 @@ namespace Words_Learning.Controllers
 
                     await Authenticate(model.Email); // аутентификация
 
-                    return RedirectToAction("Index", "Home");
+                    return Redirect("/Home/Index/" + user.Id);
                 }
                 else
                     ModelState.AddModelError("", "Некорректные логин и(или) пароль");
