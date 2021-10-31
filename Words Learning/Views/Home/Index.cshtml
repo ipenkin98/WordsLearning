@@ -1,7 +1,18 @@
-﻿@{
+﻿@model IEnumerable<Words_Learning.Models.Words>
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <div class="validation" asp-validation-summary="ModelOnly"></div>
 </div>
+
+<a asp-action="Create">Добавить пользователя</a>
+<table class="table">
+    <tr><td>Id</td><td>Words</td><td>Transcriptions</td><td>Translation</td><td>Image</td></tr>
+    
+        @foreach (var item in Model)
+        {
+            <tr><td>@item.Id</td><td>@item.Word</td><td>@item.Transcriptions</td><td>@item.Translation</td><td>@item.Image</td></tr>
+        }
+</table>

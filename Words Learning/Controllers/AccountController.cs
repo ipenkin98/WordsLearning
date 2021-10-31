@@ -37,7 +37,6 @@ namespace Words_Learning.Controllers
                 if (user != null)
                 {
                     await Authenticate(model.Email); // аутентификация
-
                     return Redirect("/Home/Index/" + user.Id);
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");

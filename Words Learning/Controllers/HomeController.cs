@@ -23,12 +23,16 @@ namespace Words_Learning.Controllers
         }
 
         [Authorize]
-        public async Task<ActionResult<User>> Index(int ?id)
+        public async Task<ActionResult<User>> Index(int? id)
         {
             User user = await db.Users.FirstOrDefaultAsync(x => x.Id == id);
+            Words words = await db.Words.FirstOrDefaultAsync(x => x.Id == id);
             if (user == null)
-                 ModelState.AddModelError("", "Id не найден"); ;
-            return View();
+            {
+                Redirect("/acount/rgister/");
+                ModelState.AddModelError("", "Пользователь не найден");
+            }
+            return View(await db.Words.Where(p=> p.UserId == user.Id).ToListAsync());
         }
 
 
@@ -37,5 +41,6 @@ namespace Words_Learning.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
     }
 }

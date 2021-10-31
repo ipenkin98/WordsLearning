@@ -12,13 +12,12 @@ namespace Words_Learning
     public class Startup
     {
         public IConfiguration Configuration { get; }
-
+        
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        
         public void ConfigureServices(IServiceCollection services)
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
@@ -52,13 +51,14 @@ namespace Words_Learning
 
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
+
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                   name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id=1}");
             });
+
         }
     }
 }
