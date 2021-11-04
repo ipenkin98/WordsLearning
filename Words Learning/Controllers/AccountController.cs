@@ -2,9 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Words_Learning.Models;
@@ -62,9 +60,7 @@ namespace Words_Learning.Controllers
                     // добавляем пользователя в бд
                     db.Users.Add(new User { Email = model.Email, Password = model.Password });
                     await db.SaveChangesAsync();
-
                     await Authenticate(model.Email); // аутентификация
-
                     return Redirect("/Home/Index/" + user.Id);
                 }
                 else

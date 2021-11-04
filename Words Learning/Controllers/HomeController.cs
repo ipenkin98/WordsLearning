@@ -6,8 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Words_Learning.Models;
+using Words_Learning.Models.Infrastructure;
 
 namespace Words_Learning.Controllers
 {
@@ -15,7 +17,6 @@ namespace Words_Learning.Controllers
     {
         private UserWordsContext db;
         private readonly ILogger<HomeController> _logger;
-
         public HomeController(ILogger<HomeController> logger, UserWordsContext context)
         {
             _logger = logger;
@@ -29,10 +30,32 @@ namespace Words_Learning.Controllers
             Words words = await db.Words.FirstOrDefaultAsync(x => x.Id == id);
             if (user == null)
             {
-                Redirect("/acount/rgister/");
-                ModelState.AddModelError("", "Пользователь не найден");
+                return Redirect("/Account/Register/");
             }
-            return View(await db.Words.Where(p=> p.UserId == user.Id).ToListAsync());
+            return View(await db.Words.Where(p => p.UserId == user.Id).ToListAsync());
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Words>> Add(Words words)
+        {
+            User user = await db.Users.FirstOrDefaultAsync();
+            if (ModelState.IsValid)
+            {
+                words.UserId = user.Id;
+                db.Words.Add(words);
+                await db.SaveChangesAsync();
+            }
+            return Redirect("/Home/Index/");
+        }
+
+        public async Task<ActionResult<Words>> Delete(Words words)
+        {
+            if (words != null)
+            {
+                db.Words.Remove(words);
+                await db.SaveChangesAsync();
+            }
+            return Redirect("/Home/Index/" );
         }
 
 
