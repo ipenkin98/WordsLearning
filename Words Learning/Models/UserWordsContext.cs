@@ -14,7 +14,7 @@ namespace Words_Learning.Models
         public UserWordsContext(DbContextOptions<UserWordsContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
     }
 }

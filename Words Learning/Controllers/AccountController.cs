@@ -18,7 +18,7 @@ namespace Words_Learning.Controllers
         {
             db = context;
         }
-        
+
         [HttpGet]
         public IActionResult Login()
         {
@@ -90,3 +90,4 @@ namespace Words_Learning.Controllers
         }
     }
 }
+

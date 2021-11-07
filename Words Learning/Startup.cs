@@ -12,7 +12,6 @@ namespace Words_Learning
     public class Startup
     {
         public IConfiguration Configuration { get; }
-        private UserWordsContext db;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -44,19 +43,19 @@ namespace Words_Learning
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseHttpsRedirection();
+            
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseEndpoints(async endpoints =>
+            app.UseEndpoints(endpoints =>
             {
 
                 endpoints.MapControllerRoute(
                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{Id=2}");
             });
 
         }

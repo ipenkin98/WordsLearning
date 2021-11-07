@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Words_Learning.Models.Words>; 
+﻿@model IEnumerable<Words_Learning.Models.Words>;
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -6,81 +6,21 @@
     <div class="validation" asp-validation-summary="ModelOnly"></div>
 </div>
 
-<!DOCTYPE html>
-<html>
-<head>
+
+
+@*<head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>Список пользователей</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" rel="stylesheet" />
-</head>
-<body>
-    <h2>Список слов</h2>
-    <form asp-action="Add" asp-controller="home">
-        <input type="hidden" name="id" value="0" />
-        @using (Html.BeginForm("Add", "Home", FormMethod.Post))
-        {
-            <table class="table table-condensed table-striped  col-md-15">
-                <tr>
-                    <td>
-                        <div class="form-group col-md-15">
-                            <label for="age">Слово:</label>
-                            <input class="form-control" type="text" name="Word" />
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-group col-md-15">
-                            <label for="age">Транскрипция:</label>
-                            <input class="form-control" type="text" name="Transcriptions" />
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-group col-md-15">
-                            <label for="age">Перевод:</label>
-                            <input class="form-control" type="text" name="Translation" />
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-group">
-                            <label for="exampleFormControlFile1">Картинка</label>
-                            <input type="file" class="form-control-file" id="exampleFormControlFile1">
-                        </div>
-                    </td>
-                    <td>
-                        <div class="panel-body">
-                            <button type="submit" id="submit" class="btn btn-primary">Сохранить</button>
-                        </div>
+</head>*@
 
-                        <div class="panel-body">
-                            <a id="reset" class="btn btn-primary">Сбросить</a>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        }
+    <div id="view-all">
+        @await Html.PartialAsync("_ViewWords", Model)
+    </div>
 
-    </form>
-    <table class="table table-condensed table-striped  col-md-12">
-        <tr>@*<td>Id</td>*@<td>Words</td><td>Transcriptions</td><td>Translation</td><td>Image</td></tr>
-        @foreach (var item in Model)
-        {
-            <tr>
-                @*<td>@item.Id</td>*@
-                <td>@item.Word</td>
-                <td>@item.Transcriptions</td>
-                <td>@item.Translation</td>
-                <td>@item.Image</td>
-                <td class="btn-link">Edit</td>
-                <td class="btn-link">
-                    @Html.ActionLink("Удалить", "Delete", 
-                                    new { id = item.Id },
-                                    new { @class = "btn btn-xs btn-primary" })
-                </td>
-            </tr>
-        }
-        <tbody>
-        </tbody>
-    </table>
-</body>
-</html>
 
+
+@section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

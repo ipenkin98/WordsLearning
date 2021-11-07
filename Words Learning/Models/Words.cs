@@ -11,7 +11,7 @@ namespace Words_Learning.Models
         public string Word { get; set; }
         public string Transcriptions { get; set; }
         public string Translation { get; set; }
-        public string Image { get; set; }
+        public byte[] Image { get; set; }
 
         public int UserId { get; set; }
         public User User { get; set; }
