@@ -55,7 +55,7 @@ namespace Words_Learning
 
                 endpoints.MapControllerRoute(
                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{Id=2}");
+                    pattern: "{controller=Home}/{action=Index}/{Id=1}");
             });
 
         }

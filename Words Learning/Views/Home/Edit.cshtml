@@ -1,0 +1,46 @@
+﻿@model Words_Learning.Models.Words
+
+@{ Layout = null; }
+
+<h2>Список слов</h2>
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit" asp-route-id="@Model.Id" onsubmit="return jQueryAjaxPost(this);">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="UserId" />
+            <table class="table table-condensed table-striped  col-md-17">
+                <tr>
+                    <td>
+                        <div class="form-group col-md-17">
+                            <label class="control-label">Слово:</label>
+                            <input asp-for="Word" class="form-control" type="text" name="Word" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group col-md-15">
+                            <label for="age">Транскрипция:</label>
+                            <input asp-for="Transcriptions" class="form-control" type="text" name="Transcriptions" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group col-md-15">
+                            <label for="age">Перевод:</label>
+                            <input asp-for="Translation" class="form-control" type="text" name="Translation" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="exampleFormControlFile1">Картинка</label>
+                            <input asp-for="Image" type="file" class="form-control-file" name="Image">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="panel-body">
+                            <button type="submit" id="submit" class="btn btn-primary">Сохранить</button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

@@ -20,7 +20,7 @@ namespace Words_Learning.Controllers
             _logger = logger;
             db = context;
         }
-
+        #region Index
         [Authorize]
         public async Task<ActionResult<User>> Index(int id)
         {   
@@ -33,25 +33,9 @@ namespace Words_Learning.Controllers
             UserID = user.Id;
             return View(await db.Words.Where(p => p.UserId == user.Id).ToListAsync());
         }
+        #endregion
 
-
-        [NoDirectAccess]
-        public async Task<IActionResult> AddOrEdit(int id = 0)
-        {
-            if (id == 0)
-                return View(new Words());
-            else
-            {
-                var wordsModel = await db.Words.FindAsync(id);
-                if (wordsModel == null)
-                {
-                    return NotFound();
-                }
-                return View(wordsModel);
-            }
-        }
-
-
+        #region Add method
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult<Words>> Add(Words words)
@@ -65,10 +49,54 @@ namespace Words_Learning.Controllers
             }
             return Redirect("/Home/Index/" + UserID);
         }
+        #endregion
+        #region Edit method
+        [NoDirectAccess]
+        public async Task<IActionResult> Edit(int id=0)
+        {
+            if (id == 0)
+            {
+                return View(new Words());
+            }
+            else
+            {
+                Words words = await db.Words.FindAsync(id);
+                if (words == null)
+                {
+                    return NotFound();
+                }
+                return View(words);
+            }
+        }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Word,Transcriptions,Translation,Image")] Words words)
+        {
+            words.UserId = UserID;
+            if (ModelState.IsValid)
+            {
+                try
+                    {
+                    db.Update(words);
+                    await db.SaveChangesAsync();
+                   
+                }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!WordsModelExists(words.Id))
+                        { return NotFound(); }
+                        else
+                        { throw; }
+                }
+                 return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewWords", db.Words.Where(p => p.UserId == UserID).ToList()) });
+            }
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Edit", db.Words) });
+        }
+        #endregion
+        #region Delete method
         public async Task<ActionResult<Words>> Delete(Words words)
         {
-            User user = await db.Users.FirstOrDefaultAsync();
             if (words != null)
             {
                 db.Words.Remove(words);
@@ -77,7 +105,7 @@ namespace Words_Learning.Controllers
             }
             return Redirect("/Home/Index/"+ UserID);
         }
-
+        #endregion
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -85,5 +113,9 @@ namespace Words_Learning.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        private bool WordsModelExists(int id)
+        {
+            return db.Words.Any(e => e.Id == id);
+        }
     }
 }
